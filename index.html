@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historico URL com localStorage</title>
+    <script src="https://kit.fontawesome.com/69d4cc193b.js"></script>
+    <link rel="stylesheet" href="estilo.css">
+
+</head>
+
+<body onload="existeHistorico()">
+    <div id="header">
+        </section>
+        <input id="campoText" type="text" value="https://www.google.com"><button onclick="encurtar()"
+            type="button">Encurtar</button>
+    </div>
+    <div id="bodyd">
+        <br>
+        <div id="receber">
+            <h1>Historico</h1>
+            <ul id="lista">
+            </ul>
+            <label id="fecharHistorico">
+                <i class="fas fa-times-circle fa-2x"></i>
+            </label>
+        </div>
+        <br>
+    </div>
+    <div id="footer">
+        <br>
+        <button id="btnHistorico">historico</button>
+        <button id="btnLimparHistorico">Limpar historico</button>
+    </div>
+
+    <!-- Script -->
+    <script>
+
+        function existeHistorico() {
+            if (localStorage.length <= 0) {
+                btnHistorico.style.display = "none"
+                btnLimparHistorico.style.display = "none"
+            } else {
+                btnHistorico.style.display = ""
+                btnLimparHistorico.style.display = ""
+            }
+        }
+        function encurtar() {
+            if (campoText.value == "" || campoText.length <= 8) {
+                console.log("Informe uma URL Válida")
+            } else {
+
+                btnHistorico.style.display = ""
+                btnLimparHistorico.style.display = ""
+
+                let site, url;
+                site = campoText.value
+                url = new URL(campoText.value)
+                localStorage.setItem(site, url.hostname)
+                window.location.reload()
+            }
+
+        }
+        /* Function Main */
+        for (let i = 0; i < localStorage.length; i++) {
+            let key = localStorage.key(i)
+            var p = document.createElement('li')
+            lista.append(p)
+            p.innerHTML = `<img src="https://www.google.com/s2/favicons?domain=${key}" ><a title="${key}" target="blank" href="https://${localStorage.getItem(key)}"> ${localStorage.getItem(key)}</a> - ${key}`
+        }
+        /* Main */
+
+        btnHistorico.addEventListener('click', function historico() {
+            receber.style.display = "block"
+        })
+
+        fecharHistorico.addEventListener('click', function fecharHistorico() {
+            receber.style.display = "none"
+        })
+
+        btnLimparHistorico.addEventListener('click', function limpar() {
+            existeHistorico()
+            localStorage.clear()
+            window.location.reload()
+        })
+
+
+
+    </script>
+
+</body>
+
+</html>
